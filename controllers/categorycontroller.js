@@ -115,16 +115,34 @@ function deleteCategory(req, res) {
       return;
     }
 
-    CategoryModel.deleteCategory(category_id, (err) => {
+    CategoryModel.getProductsCountInCategory(category_id, (err, productCount) => {
       if (err) {
-        console.error('Error al eliminar categoría:', err);
-        res.status(500).json({ error: 'Error al eliminar categoría' });
+        console.error('Error al contar productos en la categoría:', err);
+        res.status(500).json({ error: 'Error al verificar si la categoría está en uso' });
         return;
       }
-      res.json({ message: 'Categoría eliminada exitosamente' });
+
+      if (productCount > 0) {
+        // La categoría está en uso
+        res.status(400).json({ error: 'No se puede eliminar la categoría, está en uso' });
+        return;
+      }
+
+      // Si el recuento de productos es 0, procedemos a eliminar la categoría
+      CategoryModel.deleteCategory(category_id, (err) => {
+        if (err) {
+          console.error('Error al eliminar categoría:', err);
+          res.status(500).json({ error: 'Error al eliminar categoría' });
+          return;
+        }
+
+        res.json({ message: 'Categoría eliminada exitosamente' });
+      });
     });
   });
 }
+
+
 
 
 module.exports = {

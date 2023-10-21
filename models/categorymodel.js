@@ -57,6 +57,17 @@ function updateCategory(category_id, categoryData, callback) {
   );
 }
 
+function getProductsCountInCategory(category_id, callback) {
+  db.query('SELECT COUNT(*) AS productCount FROM products WHERE category_id = ?', [category_id], (err, results) => {
+    if (err) {
+      callback(err, null);
+      return;
+    }
+    // El resultado contiene un campo "productCount" que indica cuántos productos usan la categoría
+    const productCount = results[0].productCount;
+    callback(null, productCount);
+  });
+}
 
 function deleteCategory(category_id, callback) {
   db.query('DELETE FROM Category WHERE category_id = ?', [category_id], callback);
@@ -68,5 +79,6 @@ module.exports = {
   createCategory,
   updateCategory,
   deleteCategory,
-  getCategoryByName
+  getCategoryByName,
+  getProductsCountInCategory
 };

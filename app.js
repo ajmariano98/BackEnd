@@ -7,6 +7,10 @@ const config = require('./config.json');
 
 const db = mysql.createConnection(config.database);
 
+const morgan = require('morgan');
+app.use(morgan('tiny'));
+morgan(':method :url :status :res[content-length] - :response-time ms')
+
 db.connect((err) => {
   if (err) {
     console.error('Error al conectar a la base de datos:', err);
@@ -14,6 +18,8 @@ db.connect((err) => {
     console.log('App.js: Conexión exitosa a la base de datos');
   }
 });
+
+
 
 
 app.use(express.json());
