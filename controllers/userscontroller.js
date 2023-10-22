@@ -127,11 +127,40 @@ function deleteUser(req, res) {
   });
 }
 
+function deleteUserById(req, res) {
+  const user_id = req.params.user_id;
+
+
+  UsersModel.getUserById(user_id, (err, existingUser) => {
+    if (err) {
+      console.error('Error al buscar usuario por ID:', err);
+      res.status(500).json({ error: 'Error al buscar usuario por ID' });
+      return;
+    }
+
+    if (!existingUser || Object.keys(existingUser).length === 0) {
+      res.status(404).json({ error: 'El usuario no existe' });
+      return;
+    }
+
+
+    UsersModel.deleteUserById(user_id, (err) => {
+      if (err) {
+        console.error('Error al eliminar usuario:', err);
+        res.status(500).json({ error: 'Error al eliminar usuario' });
+        return;
+      }
+      res.json({ message: 'Usuario eliminado exitosamente' });
+    });
+  });
+}
+
 
 module.exports = {
   getUserByUsername,
   createUser,
   getAllUsers,
   updateUser,
-  deleteUser
+  deleteUser,
+  deleteUserById
 };

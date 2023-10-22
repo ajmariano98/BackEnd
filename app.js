@@ -8,6 +8,7 @@ const config = require('./config.json');
 const db = mysql.createConnection(config.database);
 
 const morgan = require('morgan');
+
 app.use(morgan('tiny'));
 morgan(':method :url :status :res[content-length] - :response-time ms')
 
@@ -36,7 +37,9 @@ app.get('/users/:username', UsersController.getUserByUsername);
 app.get('/userslist', UsersController.getAllUsers);
 app.post('/users', UsersController.createUser); 
 app.put('/users/:username', UsersController.updateUser); 
+app.delete('/listusers/:user_id', UsersController.deleteUserById); 
 app.delete('/users/:username', UsersController.deleteUser); 
+
 
 
 app.get('/products/:product_id', ProductsController.getProductById); 

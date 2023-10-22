@@ -28,6 +28,8 @@ function getUserByUsername(username, callback) {
 }
 
 
+
+
 function createUser(user, callback) {
   let passwordHashed = bcrypt.hashSync(user.password, 10)
   getUserByUsername(user.username, (err, existingUser) => {
@@ -78,12 +80,38 @@ function deleteUser(username, callback) {
   });
 }
 
+function getUserById(user_id, callback) {
+  db.query('SELECT user_id, username, email, password, rol_id FROM users WHERE user_id = ?', [user_id], (err, result) => {
+    if (err) {
+      callback(err, null);
+    } else if (result.length === 0) {
+      callback(null, null); 
+    } else {
+      callback(null, result[0]); 
+    }
+  });
+}
+
+function deleteUserById(user_id, callback) {
+  getUserById(user_id, (err, existingUser) => {
+    if (err) {
+      callback(err, null);
+    } else if (!existingUser) {
+      callback({ message: 'El usuario no existe' }, null);
+    } else {
+      db.query('DELETE FROM users WHERE user_id = ?', [user_id], callback);
+    }
+  });
+}
+
 
 
 module.exports = {
   createUser,
   getAllUsers,
   getUserByUsername,
+  getUserById,
   updateUser,
   deleteUser,
+  deleteUserById
 };
