@@ -82,11 +82,23 @@ function deleteProduct(product_id, callback) {
       });
 }
 
+function searchProductsByNameAndCategory(searchTerm, categoryId, callback) {
+  db.query(
+    'SELECT product_id, name, brand, category_id, price, photo, description FROM products WHERE (name LIKE ? OR brand LIKE ? OR description LIKE ?) AND (? IS NULL OR category_id = ?)',
+    [searchTerm, searchTerm, searchTerm, categoryId, categoryId],
+    callback
+  );
+}
+
+
+
+
 module.exports = {
   getProductById,
   createProduct,
   getAllProducts,
   updateProduct,
   deleteProduct,
-  getProductByNameAndBrand
+  getProductByNameAndBrand,
+  searchProductsByNameAndCategory
 };

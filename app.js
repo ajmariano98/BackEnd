@@ -33,6 +33,8 @@ const Login = require('./controllers/securitycontroller');
 const cartItemsController = require('./controllers/cartitemscontroller');
 
 
+
+
 app.get('/users/:username', UsersController.getUserByUsername);
 app.get('/userslist', UsersController.getAllUsers);
 app.post('/users', UsersController.createUser); 
@@ -59,6 +61,9 @@ app.get('/productslist/category/:category_id', (req, res) => {
     res.json(results);
   });
 });
+
+app.get('/search', ProductsController.searchProductsByNameAndCategory);
+
 
 
 app.get('/categorieslist', CategoryController.getAllCategories);

@@ -1,4 +1,4 @@
-const ProductsModel = require('../models/productsModel');
+const ProductsModel = require('../models/productsmodel');
 
 
 function getProductById(req, res) {
@@ -129,10 +129,26 @@ function deleteProduct(req, res) {
   });
 }
 
+function searchProductsByNameAndCategory(req, res) {
+  const { name, category } = req.query;
+  const searchTerm = `%${name}%`;
+  const categoryId = category || null;
+
+  ProductsModel.searchProductsByNameAndCategory(searchTerm, categoryId, (err, products) => {
+    if (err) {
+      console.error('Error al buscar productos por nombre y categoría:', err);
+      res.status(500).json({ error: 'Error al buscar productos por nombre y categoría' });
+      return;
+    }
+
+    res.json(products);
+  });
+}
 module.exports = {
   getProductById,
   createProduct,
   getAllProducts,
   updateProduct,
   deleteProduct,
+  searchProductsByNameAndCategory,
 };
