@@ -78,7 +78,8 @@ app.post('/login', Login.login);
 app.get('/cart/:user_id', cartItemsController.getAllItemsByUserId);
 app.post('/cart', cartItemsController.addItemToCart);
 app.put('/cart/:cart_item_id', cartItemsController.updateCartItem);
-app.delete('/cart/:cart_item_id', cartItemsController.deleteCartItem);
+app.delete('/cart/:user_id', cartItemsController.deleteCartItem);
+
 
 
 

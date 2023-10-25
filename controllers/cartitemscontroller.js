@@ -42,16 +42,17 @@ function updateCartItem(req, res) {
 
 
 function deleteCartItem(req, res) {
-  const { cart_item_id } = req.params;
-  CartItems.deleteCartItem(cart_item_id, (error, results) => {
+  const { user_id } = req.params;
+  CartItems.deleteCartItemsByUserId(user_id, (error, results) => {
     if (error) {
-      console.error('Error al eliminar elemento del carrito:', error);
-      res.status(500).json({ message: 'Error al eliminar elemento del carrito' });
+      console.error('Error al eliminar elementos del carrito:', error);
+      res.status(500).json({ message: 'Error al eliminar elementos del carrito' });
       return;
     }
-    res.status(200).json({ message: 'Elemento del carrito eliminado' });
+    res.status(200).json({ message: 'Elementos del carrito eliminados' });
   });
 }
+
 
 module.exports = {
   getAllItemsByUserId,

@@ -75,4 +75,15 @@ CartItems.deleteCartItem = (cart_item_id, callback) => {
   );
 };
 
+CartItems.deleteCartItemsByUserId = (user_id, callback) => {
+  db.query('DELETE FROM CartItems WHERE user_id = ?', [user_id], (error, results) => {
+    if (error) {
+      callback(error, null);
+      return;
+    }
+    callback(null, results);
+  });
+};
+
+
 module.exports = CartItems;
